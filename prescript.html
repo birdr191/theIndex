@@ -1,249 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE INDEX - PRESCRIPT</title>
-    <style>
-        :root {
-            --paper: #f4f1ea;
-            --ink: #1a1a1b;
-            --accent: #7a0000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE INDEX - PRESCRIPT</title>
 
-        body {
-            margin: 0;
-            background: #0a0a0a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'Courier New', Courier, monospace;
-            color: var(--ink);
-        }
+<style>
+:root {
+    --paper: #f4f1ea;
+    --ink: #1a1a1b;
+    --accent: #7a0000;
+}
 
-        /* The Paper / Prescript */
-        #paper {
-            width: 90vw;
-            max-width: 420px;
-            min-height: 80vh;
-            background: var(--paper);
-            border: 1px solid #d1ccc0;
-            padding: 40px 30px;
-            box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.1s, opacity 0.4s ease;
-        }
+body {
+    margin: 0;
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Courier New', monospace;
+}
 
-        /* Decorative Border Inside */
-        #paper::before {
-            content: '';
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 1px solid rgba(0,0,0,0.05);
-            pointer-events: none;
-        }
+#paper {
+    width: 90vw;
+    max-width: 420px;
+    min-height: 80vh;
+    background: var(--paper);
+    border: 1px solid #d1ccc0;
+    padding: 40px 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s;
+}
 
-        .header {
-            text-align: center;
-            border-bottom: 3px double var(--ink);
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-        }
+#paper::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
 
-        .city-tag {
-            font-size: 0.7em;
-            letter-spacing: 5px;
-            font-weight: bold;
-            opacity: 0.7;
-        }
+.serial-number {
+    text-align: right;
+    font-weight: bold;
+    font-size: 0.8em;
+}
 
-        .title {
-            font-size: 2em;
-            font-weight: 900;
-            margin-top: 5px;
-        }
+.header {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    margin: 20px 0;
+    padding-bottom: 10px;
+}
 
-        .serial-number {
-            font-size: 0.8em;
-            text-align: right;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+.city-tag {
+    font-size: 0.7em;
+    letter-spacing: 5px;
+    opacity: 0.7;
+}
 
-        .status-box {
-            background: #e5e2db;
-            padding: 5px 10px;
-            font-weight: bold;
-            font-size: 0.9em;
-            border-left: 5px solid var(--ink);
-            margin-bottom: 30px;
-        }
+.title {
+    font-size: 2em;
+    font-weight: 900;
+}
 
-        .mandate-area {
-            flex-grow: 1;
-            font-size: 1.2em;
-            line-height: 1.6;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding-top: 20px;
-        }
+.status-box {
+    background: #e5e2db;
+    padding: 6px 10px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--ink);
+}
 
-        #subject-display {
-            text-decoration: underline;
-            margin-bottom: 15px;
-            display: block;
-        }
+.mandate-area {
+    flex-grow: 1;
+    font-size: 1.1em;
+    line-height: 1.6;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 20px;
+}
 
-        /* The "Will" text should look heavier */
-        #mandate-display {
-            font-weight: bold;
-            font-style: italic;
-        }
+#subject-display {
+    display: block;
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
 
-        .footer-sig {
-            margin-top: 40px;
-            border-top: 1px solid var(--ink);
-            padding-top: 10px;
-            font-size: 0.8em;
-            display: flex;
-            justify-content: space-between;
-        }
+#mandate-display {
+    font-weight: bold;
+    font-style: italic;
+}
 
-        #cooldown-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 6px;
-            background: var(--accent);
-            width: 0%;
-        }
+.footer-sig {
+    border-top: 1px solid var(--ink);
+    padding-top: 10px;
+    font-size: 0.8em;
+    display: flex;
+    justify-content: space-between;
+}
 
-        .stamp {
-            position: absolute;
-            bottom: 60px;
-            right: 20px;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 8px;
-            font-weight: bold;
-            font-size: 1.1em;
-            transform: rotate(-12deg);
-            opacity: 0.5;
-            user-select: none;
-        }
+.stamp {
+    position: absolute;
+    right: 20px;
+    bottom: 60px;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 10px;
+    transform: rotate(-12deg);
+    opacity: 0.5;
+    font-weight: bold;
+}
 
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            25% { transform: translate(-2px, -1px) rotate(0.5deg); }
-            50% { transform: translate(-1px, 2px) rotate(-0.5deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-    </style>
+#cooldown-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    background: var(--accent);
+    width: 0%;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px); }
+    25% { transform: translate(-2px, -1px); }
+    50% { transform: translate(-1px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+</style>
 </head>
-<body onclick="weave()">
 
-    <div id="paper">
-        <div class="serial-number">No. <span id="serial-id">000-000</span></div>
-        
-        <div class="header">
-            <div class="city-tag">CITY OF ENFIELD</div>
-            <div class="title">PRESCRIPT</div>
-        </div>
+<body>
+<div id="paper">
+    <div class="serial-number">No. <span id="serial-id">000-000</span></div>
 
-        <div class="status-box" id="status-display">CHECKING PROVIDENCE...</div>
-        
-        <div class="mandate-area">
-            <span id="subject-display">PENDING...</span>
-            <p id="mandate-display">Awaiting the Weaver's Hand. (Tap to Consult)</p>
-        </div>
-
-        <div class="footer-sig">
-            <span>UNIT 4/5 PROXY</span>
-            <span>SIGNED: ___________</span>
-        </div>
-
-        <div class="stamp">VERIFIED</div>
-        <div id="cooldown-bar"></div>
+    <div class="header">
+        <div class="city-tag">CITY OF ENFIELD</div>
+        <div class="title">PRESCRIPT</div>
     </div>
 
-    <script>
-        let isCoolingDown = false;
+    <div class="status-box" id="status-display">CHECKING PROVIDENCE...</div>
 
-        const SCHEDULE = {
-            1: { name: "MON", classes: [{t: 8.25, n: "ว30203 (PHYSICS)"}, {t: 10.15, n: "อ31101 (ENGLISH)"}, {t: 12.55, n: "ค31201 (ADD MATH)"}] },
-            2: { name: "TUE", classes: [{t: 8.25, n: "ว30283 (ASTRONOMY)"}, {t: 10.15, n: "ค31201 (ADD MATH)"}, {t: 13.00, n: "พ31101 (PHYS ED)"}] },
-            3: { name: "WED", classes: [{t: 8.25, n: "ท31101 (THAI)"}, {t: 10.15, n: "ว30223 (CHEM)"}, {t: 13.00, n: "ค31101 (BASIC MATH)"}] },
-            4: { name: "THU", classes: [{t: 8.25, n: "ว30203 (PHYSICS)"}, {t: 10.15, n: "ว30243 (BIO)"}, {t: 13.00, n: "ส31101 (SOCIAL)"}] },
-            5: { name: "FRI", classes: [{t: 8.25, n: "ค31201 (ADD MATH)"}, {t: 10.15, n: "อ31101 (ENGLISH)"}, {t: 13.50, n: "GUIDANCE"}] }
-        };
+    <div class="mandate-area">
+        <span id="subject-display">PENDING...</span>
+        <p id="mandate-display">Awaiting the Weaver's Hand.</p>
+    </div>
 
-        const WILLS = [
-            "Inscribe the Will into your memory.",
-            "Observe the silence of your peers.",
-            "Do not question the presiding authorities.",
-            "The Index sees all movements.",
-            "Counting breaths is a form of worship.",
-            "Carry out the mandate without hesitation.",
-            "The path is already woven.",
-            "Your devotion is measured in compliance."
-        ];
+    <div class="footer-sig">
+        <span>UNIT 4/5 PROXY</span>
+        <span>SIGNED: __________</span>
+    </div>
 
-        function weave() {
-            if (isCoolingDown) return;
+    <div class="stamp">VERIFIED</div>
+    <div id="cooldown-bar"></div>
+</div>
 
-            // Generate "Serial Number" for flavor
-            document.getElementById('serial-id').innerText = 
-                Math.floor(Math.random()*900+100) + "-" + Math.floor(Math.random()*900+100);
+<script>
+let isCoolingDown = false;
+let clickHistory = [];
 
-            // Visual Shake
-            const paper = document.getElementById('paper');
-            paper.style.animation = "shake 0.3s ease-in-out";
-            setTimeout(() => { paper.style.animation = ""; }, 300);
+const SCHEDULE = {
+    1: { classes: [
+        { start: 8.25, end: 9.55, n: "ว30203 (PHYSICS)" },
+        { start: 10.15, end: 11.45, n: "อ31101 (ENGLISH)" },
+        { start: 12.55, end: 14.25, n: "ค31201 (ADD MATH)" }
+    ]},
+    2: { classes: [
+        { start: 8.25, end: 9.55, n: "ว30283 (ASTRONOMY)" },
+        { start: 10.15, end: 11.45, n: "ค31201 (ADD MATH)" },
+        { start: 13.00, end: 14.30, n: "พ31101 (PHYS ED)" }
+    ]},
+    3: { classes: [
+        { start: 8.25, end: 9.55, n: "ท31101 (THAI)" },
+        { start: 10.15, end: 11.45, n: "ว30223 (CHEM)" },
+        { start: 13.00, end: 14.30, n: "ค31101 (BASIC MATH)" }
+    ]},
+    4: { classes: [
+        { start: 8.25, end: 9.55, n: "ว30203 (PHYSICS)" },
+        { start: 10.15, end: 11.45, n: "ว30243 (BIO)" },
+        { start: 13.00, end: 14.30, n: "ส31101 (SOCIAL)" }
+    ]},
+    5: { classes: [
+        { start: 8.25, end: 9.55, n: "ค31201 (ADD MATH)" },
+        { start: 10.15, end: 11.45, n: "อ31101 (ENGLISH)" },
+        { start: 13.50, end: 14.30, n: "GUIDANCE" }
+    ]}
+};
 
-            const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"}));
-            const day = now.getDay();
-            const timeVal = now.getHours() + (now.getMinutes() / 60);
+const WILLS = {
+    enforcing: [
+        "Carry out the mandate without hesitation.",
+        "Compliance has already been measured.",
+        "Deviation is inefficient."
+    ],
+    observing: [
+        "Remain in place.",
+        "The Weaver is watching.",
+        "Await further clarification."
+    ],
+    dormant: [
+        "Wait.",
+        "Time itself obeys.",
+        "No action is required."
+    ],
+    irregular: [
+        "Impatience has been recorded.",
+        "Deviation is not recommended.",
+        "Further inquiry is discouraged."
+    ]
+};
 
-            let status = "STATUS: DORMANT";
-            let subject = "NO CURRENT MANDATE";
-            let isSchool = (day >= 1 && day <= 5) && (timeVal >= 8.25 && timeVal <= 16.5);
+function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
-            if (isSchool) {
-                status = "STATUS: ENFORCING";
-                const todayClasses = SCHEDULE[day].classes;
-                let currentClass = todayClasses.reduce((prev, curr) => (timeVal >= curr.t ? curr : prev), todayClasses[0]);
-                subject = "MANDATE: " + currentClass.n;
-            }
+function getCurrentClass(day, timeVal) {
+    const today = SCHEDULE[day];
+    if (!today) return null;
+    return today.classes.find(c => timeVal >= c.start && timeVal <= c.end) || null;
+}
 
-            document.getElementById('status-display').innerText = status;
-            document.getElementById('subject-display').innerText = subject;
-            document.getElementById('mandate-display').innerText = '"' + WILLS[Math.floor(Math.random() * WILLS.length)] + '"';
+function weave() {
+    if (isCoolingDown) return;
 
-            startCooldown(3000);
-        }
+    const nowMs = Date.now();
+    clickHistory = clickHistory.filter(t => nowMs - t < 5000);
+    clickHistory.push(nowMs);
 
-        function startCooldown(ms) {
-            isCoolingDown = true;
-            const bar = document.getElementById('cooldown-bar');
-            const paper = document.getElementById('paper');
-            
-            paper.style.opacity = "0.7";
-            bar.style.transition = `width ${ms}ms linear`;
-            bar.style.width = "100%";
+    const spamLevel = clickHistory.length;
 
-            setTimeout(() => {
-                isCoolingDown = false;
-                bar.style.transition = "none";
-                bar.style.width = "0%";
-                paper.style.opacity = "1";
-            }, ms);
-        }
+    document.getElementById("serial-id").innerText =
+        Math.floor(Math.random()*900+100) + "-" + Math.floor(Math.random()*900+100);
 
-        window.onload = weave;
-    </script>
+    const paper = document.getElementById("paper");
+    paper.style.animation = "shake 0.3s";
+    setTimeout(() => paper.style.animation = "", 300);
+
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" }));
+    const day = now.getDay();
+    const timeVal = now.getHours() + now.getMinutes()/60;
+
+    const isSchool = day >= 1 && day <= 5 && timeVal >= 8.25 && timeVal <= 16.5;
+    const currentClass = isSchool ? getCurrentClass(day, timeVal) : null;
+
+    let status = "STATUS: DORMANT";
+    let subject = "NO CURRENT MANDATE";
+    let willPool = WILLS.dormant;
+
+    if (spamLevel >= 3) {
+        status = "STATUS: IRREGULARITY DETECTED";
+        willPool = WILLS.irregular;
+    } else if (isSchool && currentClass) {
+        status = "STATUS: ENFORCING";
+        subject = "MANDATE: " + currentClass.n;
+        willPool = WILLS.enforcing;
+    } else if (isSchool) {
+        status = "STATUS: OBSERVING";
+        willPool = WILLS.observing;
+    }
+
+    document.getElementById("status-display").innerText = status;
+    document.getElementById("subject-display").innerText = subject;
+    document.getElementById("mandate-display").innerText = `"${pick(willPool)}"`;
+
+    startCooldown(3000);
+}
+
+function startCooldown(ms) {
+    isCoolingDown = true;
+    const bar = document.getElementById("cooldown-bar");
+    const paper = document.getElementById("paper");
+
+    paper.style.opacity = "0.7";
+    bar.style.transition = `width ${ms}ms linear`;
+    bar.style.width = "100%";
+
+    setTimeout(() => {
+        isCoolingDown = false;
+        bar.style.transition = "none";
+        bar.style.width = "0%";
+        paper.style.opacity = "1";
+    }, ms);
+}
+
+document.getElementById("paper").addEventListener("click", weave);
+window.onload = weave;
+</script>
 </body>
 </html>
