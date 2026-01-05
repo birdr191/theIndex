@@ -34,6 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: opacity 0.3s;
+    cursor: pointer;
 }
 
 #paper::before {
@@ -73,6 +74,7 @@ body {
     font-weight: bold;
     margin-bottom: 25px;
     border-left: 5px solid var(--ink);
+    text-transform: uppercase;
 }
 
 .mandate-area {
@@ -87,6 +89,7 @@ body {
     display: block;
     margin-bottom: 15px;
     text-decoration: underline;
+    font-weight: bold;
 }
 
 #mandate-display {
@@ -129,6 +132,10 @@ body {
     50% { transform: translate(-1px, 2px); }
     100% { transform: translate(0, 0); }
 }
+
+.urgent {
+    color: var(--accent);
+}
 </style>
 </head>
 
@@ -163,29 +170,48 @@ let clickHistory = [];
 
 const SCHEDULE = {
     1: { classes: [
-        { start: 8.25, end: 9.55, n: "ว30203 (PHYSICS)" },
-        { start: 10.15, end: 11.45, n: "อ31101 (ENGLISH)" },
-        { start: 12.55, end: 14.25, n: "ค31201 (ADD MATH)" }
+        { start: 8.50, end: 9.33, n: "อ30205 (ครูชมพูนุช)", r: "ROOM 243" },
+        { start: 9.33, end: 10.16, n: "ค31102 (ครูธิดารัตน์)", r: "ROOM 243" },
+        { start: 10.33, end: 11.16, n: "พ31201 (ครูอภิชัย)", r: "GYM สน.5" },
+        { start: 12.00, end: 12.83, n: "อ31102 (ครูโสรญา)", r: "ROOM 243" },
+        { start: 12.83, end: 13.66, n: "อ30225 (ครูจุฑามาศ)", r: "ROOM 243" },
+        { start: 13.66, end: 14.50, n: "จ31202 (ครูฐิติมา)", r: "ROOM 243" },
+        { start: 14.50, end: 15.33, n: "ท31102 (ครูปิยธิดา)", r: "ROOM 243" }
     ]},
     2: { classes: [
-        { start: 8.25, end: 9.55, n: "ว30283 (ASTRONOMY)" },
-        { start: 10.15, end: 11.45, n: "ค31201 (ADD MATH)" },
-        { start: 13.00, end: 14.30, n: "พ31101 (PHYS ED)" }
+        { start: 8.50, end: 10.16, n: "ว30283 COMPUTER (ครูรจนา)", r: "ROOM 138" },
+        { start: 10.33, end: 11.16, n: "อ30225 (ครูจุฑามาศ)", r: "ROOM 243" },
+        { start: 12.00, end: 12.83, n: "อ30224 (ครูภชพน)", r: "ROOM 243" },
+        { start: 12.83, end: 13.66, n: "อ30205 (ครูชมพูนุช)", r: "ROOM 243" },
+        { start: 13.66, end: 15.33, n: "I30209 (ครูปวีณา)", r: "ROOM 243" }
     ]},
     3: { classes: [
-        { start: 8.25, end: 9.55, n: "ท31101 (THAI)" },
-        { start: 10.15, end: 11.45, n: "ว30223 (CHEM)" },
-        { start: 13.00, end: 14.30, n: "ค31101 (BASIC MATH)" }
+        { start: 8.50, end: 9.33, n: "อ31210 (T.E)", r: "ROOM 243" },
+        { start: 9.33, end: 10.16, n: "อ30224 (ครูภชพน)", r: "ROOM 243" },
+        { start: 10.33, end: 11.16, n: "ส31102 (ครูดนัย)", r: "ROOM 243" },
+        { start: 12.00, end: 12.83, n: "พ31102 (ครูอภิชัย)", r: "GYM สน.5" },
+        { start: 12.83, end: 14.50, n: "ว30141 (ครูนันทวัน)", r: "ROOM 243" },
+        { start: 14.50, end: 15.33, n: "ค31102 (ครูธิดารัตน์)", r: "ROOM 243" },
+        { start: 15.33, end: 16.16, n: "อ31204 (ครูฤทัยรัตน์)", r: "ROOM 243" }
     ]},
     4: { classes: [
-        { start: 8.25, end: 9.55, n: "ว30203 (PHYSICS)" },
-        { start: 10.15, end: 11.45, n: "ว30243 (BIO)" },
-        { start: 13.00, end: 14.30, n: "ส31101 (SOCIAL)" }
+        { start: 8.50, end: 10.16, n: "ง30101 (ครูอัญชลี)", r: "SHOP ฝ301" },
+        { start: 10.33, end: 11.16, n: "ท31102 (ครูปิยธิดา)", r: "ROOM 243" },
+        { start: 12.00, end: 12.83, n: "อ31210 (T.E)", r: "ROOM 243" },
+        { start: 12.83, end: 13.66, n: "ส31102 (ครูดนัย)", r: "ROOM 243" },
+        { start: 13.66, end: 14.50, n: "อ31102 (ครูโสรญา)", r: "ROOM 243" },
+        { start: 14.50, end: 15.33, n: "ประชุมระดับ (Meeting)", r: "HALL" },
+        { start: 15.33, end: 16.16, n: "สืบค้น IT (Search)", r: "IT CENTER" }
     ]},
     5: { classes: [
-        { start: 8.25, end: 9.55, n: "ค31201 (ADD MATH)" },
-        { start: 10.15, end: 11.45, n: "อ31101 (ENGLISH)" },
-        { start: 13.50, end: 14.30, n: "GUIDANCE" }
+        { start: 8.50, end: 9.33, n: "อ31204 (ครูฤทัยรัตน์)", r: "ROOM 243" },
+        { start: 9.33, end: 10.16, n: "ว30141 (ครูนันทวัน)", r: "ROOM 243" },
+        { start: 10.33, end: 11.16, n: "ศ30101 (ครูธนิกนันท์)", r: "SHOP ฝ102" },
+        { start: 12.00, end: 12.83, n: "ค31102 (ครูธิดารัตน์)", r: "ROOM 243" },
+        { start: 12.83, end: 13.66, n: "แนะแนว (Guidance)", r: "ROOM 243" },
+        { start: 13.66, end: 14.50, n: "ชุมนุม (Club)", r: "Varies" },
+        { start: 14.50, end: 15.33, n: "อ30205 (ครูชมพูนุช)", r: "ROOM 243" },
+        { start: 15.33, end: 16.16, n: "อ31210 (T.E)", r: "ROOM 243" }
     ]}
 };
 
@@ -193,21 +219,22 @@ const WILLS = {
     enforcing: [
         "Carry out the mandate without hesitation.",
         "Compliance has already been measured.",
-        "Deviation is inefficient."
+        "Focus on the task assigned.",
+        "The Weaver expects perfect attendance."
     ],
     observing: [
         "Remain in place.",
         "The Weaver is watching.",
-        "Await further clarification."
+        "Transition period active."
     ],
     dormant: [
         "Wait.",
         "Time itself obeys.",
-        "No action is required."
+        "Rest until the next cycle begins."
     ],
     irregular: [
         "Impatience has been recorded.",
-        "Deviation is not recommended.",
+        "Stay focused on the present moment.",
         "Further inquiry is discouraged."
     ]
 };
@@ -228,42 +255,50 @@ function weave() {
     const nowMs = Date.now();
     clickHistory = clickHistory.filter(t => nowMs - t < 5000);
     clickHistory.push(nowMs);
-
     const spamLevel = clickHistory.length;
 
-    document.getElementById("serial-id").innerText =
-        Math.floor(Math.random()*900+100) + "-" + Math.floor(Math.random()*900+100);
-
+    // Visual Shake
     const paper = document.getElementById("paper");
     paper.style.animation = "shake 0.3s";
     setTimeout(() => paper.style.animation = "", 300);
 
-    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" }));
+    // Randomize Serial
+    document.getElementById("serial-id").innerText =
+        Math.floor(Math.random()*900+100) + "-" + Math.floor(Math.random()*900+100);
+
+    // Time Calc (Bangkok Time Logic)
+    const now = new Date();
     const day = now.getDay();
     const timeVal = now.getHours() + now.getMinutes()/60;
 
-    const isSchool = day >= 1 && day <= 5 && timeVal >= 8.25 && timeVal <= 16.5;
+    const isSchool = day >= 1 && day <= 5;
     const currentClass = isSchool ? getCurrentClass(day, timeVal) : null;
 
     let status = "STATUS: DORMANT";
     let subject = "NO CURRENT MANDATE";
-    let willPool = WILLS.dormant;
+    let mandateText = pick(WILLS.dormant);
+    let isUrgent = false;
 
     if (spamLevel >= 3) {
-        status = "STATUS: IRREGULARITY DETECTED";
-        willPool = WILLS.irregular;
+        status = "STATUS: IRREGULARITY";
+        mandateText = pick(WILLS.irregular);
     } else if (isSchool && currentClass) {
-        status = "STATUS: ENFORCING";
-        subject = "MANDATE: " + currentClass.n;
-        willPool = WILLS.enforcing;
+        const remaining = Math.round((currentClass.end - timeVal) * 60);
+        status = `LOCATION: ${currentClass.r}`;
+        subject = `MANDATE: ${currentClass.n}`;
+        mandateText = `"${pick(WILLS.enforcing)}" — [${remaining}m LEFT]`;
+        if (remaining <= 5) isUrgent = true;
     } else if (isSchool) {
         status = "STATUS: OBSERVING";
-        willPool = WILLS.observing;
+        mandateText = pick(WILLS.observing);
     }
 
-    document.getElementById("status-display").innerText = status;
+    const statusDisp = document.getElementById("status-display");
+    statusDisp.innerText = status;
+    statusDisp.className = isUrgent ? "status-box urgent" : "status-box";
+    
     document.getElementById("subject-display").innerText = subject;
-    document.getElementById("mandate-display").innerText = `"${pick(willPool)}"`;
+    document.getElementById("mandate-display").innerText = mandateText;
 
     startCooldown(3000);
 }
@@ -272,11 +307,9 @@ function startCooldown(ms) {
     isCoolingDown = true;
     const bar = document.getElementById("cooldown-bar");
     const paper = document.getElementById("paper");
-
     paper.style.opacity = "0.7";
     bar.style.transition = `width ${ms}ms linear`;
     bar.style.width = "100%";
-
     setTimeout(() => {
         isCoolingDown = false;
         bar.style.transition = "none";
