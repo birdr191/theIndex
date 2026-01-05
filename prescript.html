@@ -3,105 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prescript - UNIT 4/5</title>
+    <title>THE INDEX - PRESCRIPT</title>
     <style>
         :root {
-            --paper: #f0ede9;
+            --paper: #f4f1ea;
             --ink: #1a1a1b;
+            --accent: #7a0000;
         }
 
         body {
             margin: 0;
-            background: #000;
+            background: #0a0a0a;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             font-family: 'Courier New', Courier, monospace;
+            color: var(--ink);
         }
 
+        /* The Paper / Prescript */
         #paper {
             width: 90vw;
-            max-width: 400px;
-            min-height: 70vh;
+            max-width: 420px;
+            min-height: 80vh;
             background: var(--paper);
-            border: 2px solid #333;
-            padding: 30px;
+            border: 1px solid #d1ccc0;
+            padding: 40px 30px;
             box-sizing: border-box;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
             position: relative;
-            transition: transform 0.1s, opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.1s, opacity 0.4s ease;
+        }
+
+        /* Decorative Border Inside */
+        #paper::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(0,0,0,0.05);
+            pointer-events: none;
         }
 
         .header {
             text-align: center;
-            border-bottom: 2px solid var(--ink);
-            padding-bottom: 10px;
+            border-bottom: 3px double var(--ink);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .city-tag {
+            font-size: 0.7em;
+            letter-spacing: 5px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .title {
+            font-size: 2em;
+            font-weight: 900;
+            margin-top: 5px;
+        }
+
+        .serial-number {
+            font-size: 0.8em;
+            text-align: right;
             margin-bottom: 20px;
+            font-weight: bold;
         }
 
         .status-box {
+            background: #e5e2db;
+            padding: 5px 10px;
             font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 0.9em;
+            border-left: 5px solid var(--ink);
+            margin-bottom: 30px;
         }
 
         .mandate-area {
-            font-size: 1.1em;
-            line-height: 1.5;
-            min-height: 150px;
+            flex-grow: 1;
+            font-size: 1.2em;
+            line-height: 1.6;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+
+        #subject-display {
+            text-decoration: underline;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* The "Will" text should look heavier */
+        #mandate-display {
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .footer-sig {
+            margin-top: 40px;
+            border-top: 1px solid var(--ink);
+            padding-top: 10px;
+            font-size: 0.8em;
+            display: flex;
+            justify-content: space-between;
         }
 
         #cooldown-bar {
             position: absolute;
             bottom: 0;
             left: 0;
-            height: 4px;
-            background: #888;
+            height: 6px;
+            background: var(--accent);
             width: 0%;
-            transition: none;
         }
 
         .stamp {
             position: absolute;
-            bottom: 20px;
+            bottom: 60px;
             right: 20px;
-            border: 3px solid #7a0000;
-            color: #7a0000;
-            padding: 5px;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 8px;
             font-weight: bold;
-            transform: rotate(-15deg);
-            opacity: 0.6;
+            font-size: 1.1em;
+            transform: rotate(-12deg);
+            opacity: 0.5;
+            user-select: none;
         }
 
-        /* Animation for shaking */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            40% { transform: translate(3px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            80% { transform: translate(3px, -1px) rotate(1deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            25% { transform: translate(-2px, -1px) rotate(0.5deg); }
+            50% { transform: translate(-1px, 2px) rotate(-0.5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
         }
     </style>
 </head>
 <body onclick="weave()">
 
     <div id="paper">
+        <div class="serial-number">No. <span id="serial-id">000-000</span></div>
+        
         <div class="header">
-            <div style="font-size: 0.8em; letter-spacing: 3px;">CITY OF ENFIELD</div>
-            <div style="font-size: 1.5em; font-weight: bold;">THE INDEX</div>
+            <div class="city-tag">CITY OF ENFIELD</div>
+            <div class="title">PRESCRIPT</div>
         </div>
 
-        <div class="status-box" id="status-display">STATUS: INITIALIZING...</div>
+        <div class="status-box" id="status-display">CHECKING PROVIDENCE...</div>
         
         <div class="mandate-area">
-            <p id="subject-display" style="font-weight: bold;"></p>
-            <p id="mandate-display">Tap to receive the Will.</p>
+            <span id="subject-display">PENDING...</span>
+            <p id="mandate-display">Awaiting the Weaver's Hand. (Tap to Consult)</p>
         </div>
 
-        <div class="stamp">UNIT 4/5</div>
+        <div class="footer-sig">
+            <span>UNIT 4/5 PROXY</span>
+            <span>SIGNED: ___________</span>
+        </div>
+
+        <div class="stamp">VERIFIED</div>
         <div id="cooldown-bar"></div>
     </div>
 
@@ -109,56 +174,56 @@
         let isCoolingDown = false;
 
         const SCHEDULE = {
-            1: { name: "MON", classes: [{t: 8.25, n: "ว30203"}, {t: 10.15, n: "อ31101"}, {t: 12.55, n: "ค31201"}] },
-            2: { name: "TUE", classes: [{t: 8.25, n: "ว30283"}, {t: 10.15, n: "ค31201"}, {t: 13.00, n: "พ31101"}] },
-            3: { name: "WED", classes: [{t: 8.25, n: "ท31101"}, {t: 10.15, n: "ว30223"}, {t: 13.00, n: "ค31101"}] },
-            4: { name: "THU", classes: [{t: 8.25, n: "ว30203"}, {t: 10.15, n: "ว30243"}, {t: 13.00, n: "ส31101"}] },
-            5: { name: "FRI", classes: [{t: 8.25, n: "ค31201"}, {t: 10.15, n: "อ31101"}, {t: 13.50, n: "GUIDANCE"}] }
+            1: { name: "MON", classes: [{t: 8.25, n: "ว30203 (PHYSICS)"}, {t: 10.15, n: "อ31101 (ENGLISH)"}, {t: 12.55, n: "ค31201 (ADD MATH)"}] },
+            2: { name: "TUE", classes: [{t: 8.25, n: "ว30283 (ASTRONOMY)"}, {t: 10.15, n: "ค31201 (ADD MATH)"}, {t: 13.00, n: "พ31101 (PHYS ED)"}] },
+            3: { name: "WED", classes: [{t: 8.25, n: "ท31101 (THAI)"}, {t: 10.15, n: "ว30223 (CHEM)"}, {t: 13.00, n: "ค31101 (BASIC MATH)"}] },
+            4: { name: "THU", classes: [{t: 8.25, n: "ว30203 (PHYSICS)"}, {t: 10.15, n: "ว30243 (BIO)"}, {t: 13.00, n: "ส31101 (SOCIAL)"}] },
+            5: { name: "FRI", classes: [{t: 8.25, n: "ค31201 (ADD MATH)"}, {t: 10.15, n: "อ31101 (ENGLISH)"}, {t: 13.50, n: "GUIDANCE"}] }
         };
 
         const WILLS = [
             "Inscribe the Will into your memory.",
             "Observe the silence of your peers.",
             "Do not question the presiding authorities.",
-            "Maintain the order of the Unit.",
             "The Index sees all movements.",
-            "Counting breaths is a form of worship."
+            "Counting breaths is a form of worship.",
+            "Carry out the mandate without hesitation.",
+            "The path is already woven.",
+            "Your devotion is measured in compliance."
         ];
 
         function weave() {
             if (isCoolingDown) return;
 
-            // Trigger Shake
-            const paper = document.getElementById('paper');
-            paper.style.animation = "shake 0.4s";
-            setTimeout(() => { paper.style.animation = ""; }, 400);
+            // Generate "Serial Number" for flavor
+            document.getElementById('serial-id').innerText = 
+                Math.floor(Math.random()*900+100) + "-" + Math.floor(Math.random()*900+100);
 
-            // Time Calculation (Thailand)
+            // Visual Shake
+            const paper = document.getElementById('paper');
+            paper.style.animation = "shake 0.3s ease-in-out";
+            setTimeout(() => { paper.style.animation = ""; }, 300);
+
             const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"}));
             const day = now.getDay();
-            const hour = now.getHours();
-            const min = now.getMinutes();
-            const timeVal = hour + (min / 60);
+            const timeVal = now.getHours() + (now.getMinutes() / 60);
 
-            // Logic
             let status = "STATUS: DORMANT";
             let subject = "NO CURRENT MANDATE";
-            let isSchool = (day >= 1 && day <= 5) && (timeVal >= 8.25 && timeVal <= 16.16);
+            let isSchool = (day >= 1 && day <= 5) && (timeVal >= 8.25 && timeVal <= 16.5);
 
             if (isSchool) {
                 status = "STATUS: ENFORCING";
                 const todayClasses = SCHEDULE[day].classes;
                 let currentClass = todayClasses.reduce((prev, curr) => (timeVal >= curr.t ? curr : prev), todayClasses[0]);
-                subject = "CURRENT: " + currentClass.n;
+                subject = "MANDATE: " + currentClass.n;
             }
 
-            // Update UI
             document.getElementById('status-display').innerText = status;
             document.getElementById('subject-display').innerText = subject;
-            document.getElementById('mandate-display').innerText = WILLS[Math.floor(Math.random() * WILLS.length)];
+            document.getElementById('mandate-display').innerText = '"' + WILLS[Math.floor(Math.random() * WILLS.length)] + '"';
 
-            // Start Cooldown (4 Seconds)
-            startCooldown(4000);
+            startCooldown(3000);
         }
 
         function startCooldown(ms) {
@@ -166,7 +231,7 @@
             const bar = document.getElementById('cooldown-bar');
             const paper = document.getElementById('paper');
             
-            paper.style.opacity = "0.8";
+            paper.style.opacity = "0.7";
             bar.style.transition = `width ${ms}ms linear`;
             bar.style.width = "100%";
 
@@ -178,9 +243,7 @@
             }, ms);
         }
 
-        // Initial check
         window.onload = weave;
     </script>
 </body>
 </html>
-
